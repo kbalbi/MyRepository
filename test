@@ -1,0 +1,84 @@
+Design for complex E-Commerce Applications 
+
+Overview 
+
+In today's world, eCommerce applications are becoming complex than earlier. The requirements are more demanding, very few requirements are with single site, single language, single catalog, single currency, have a single development staff, single business team, and a relatively simple business model. 
+Most cases in the real world are complex applications, wherein the applicaiton has to support multiple sites, multiple languages, multiple catalogs, multiple currencies, a couple different development teams, multiple business teams, and a highly complex business model. 
+It's absolutely a necessary to handle these complex applications. On top of this, the design has to be robust and scalable. Along with this, today we have new new technologies coming every other day, so the solution design should be able to easily adap this new technologies. If the design is not efficient, operating cost will increase dramatically as well as the time to market. 
+I thought to share this information, so that many can be benefitted, atleast this can helps them as a base to build their solution.
+Before you go below, I would recommend you to read and be familiar with the following Java, Spring, JAXB, ATG, Angular, Polymer, REST, etc
+
+Application Design 
+Let us assume a application which has the following requirements. 
+The organization operates in multiple countries - It means it has to support multiple sites, catalogs, languages, and currencies 
+The organization has businesses across different countries -  it means the application has to support internationalization.
+There are some common business functionality across all sites in all countries 
+There are some common business functionality across different sites within the same country 
+Sites within a single country may have some unique functionality - relative to other sites in the same country 
+Complex and common product catalog.
+The site needs to be responsive to different form factor like mobile, tablet or browser.
+Response time has to be quick, have smooth page navigation. 
+
+Code / configuration - assemble into modules
+When it comes to defining your modules for a complex application, there are a number of goals: 
+Divide functionality between the modules in a way that maps to your business 
+Group common functionality 'further down in the stack of modules' 
+Provide a good balance between shared resources and autonomy for countries / sites
+Now I'll describe a high level approach to how you could accomplish those goals... Let's start from the bottom and work our way up. At the very bottom, you have the modules that ship with ATG - the 'out of the box' stuff. You want to make sure that you are leveraging all the modules that make sense in order to get the most value from ATG as possible - and less stuff you'll have to write yourself. On top of the ATG modules, you should create what we'll refer to as the Corporate Foundation Module described as follows: 
+Sits directly on top of ATG modules 
+Used by all applications across all countries and sites - this is the foundation for everyone 
+Contains everything that is common across all countries / all sites 
+Once established and settled, will change less frequently than other 'higher' modules 
+Encapsulates as many enterprise-wide integrations as possible 
+Will provide means of code sharing therefore less development / testing - faster time to market 
+Contains a 'reference' web application (described below)
+The next layer up could be multiple modules for each country (you could replace this with region if that makes more sense). We'll define those modules as follows: 
+Sits on top of the corporate foundation module 
+Contains what is unique to all sites in a given country 
+Responsible for managing any resource bundles for this country (to handle multiple languages) 
+Overrides / replaces corporate integration points with any country-specific ones
+Finally, we will define what should be a fairly 'thin' (in terms of functionality) set of modules for each site as follows: 
+Sits on top of the country it resides in module 
+Contains what is unique for a given site within a given country 
+Will mostly contain configuration, but could also define some unique functionality as well 
+Contains one or more web applications
+The graphic below should help to indicate how these modules fit together: 
+
+Web applications 
+As described in the previous section, there are many opportunities for sharing (minimizing costs) as it relates to the code and configuration aspects of ATG modules. Web applications are also contained within ATG modules, however, sharing web applications can be a bit more difficult because this is what the end customer actually sees, and since each site may have some degree of unique look & feel, sharing becomes more challenging. One approach that can help is to define a 'reference' web application at the corporate foundation layer to act as a solid starting point for each site. Here's a description of the 'reference' web application: 
+Contains minimal / sample reference styling as this will mostly be addressed at the site level web app 
+Focus on functionality - ensure that core functionality is revealed via this web application 
+Each individual site can use this as a starting point 
+There may be multiple types of web apps (i.e. B2C, B2B, etc)
+There are some techniques to share web application assets - i.e. multiple web applications, defined in the web.xml, and it's worth investigating, but is out of scope here. 
+Reference infrastructure 
+In this complex environment, it is assumed that there is not a single infrastructure for all countries and all sites. It's more likely that different countries (or regions) could have their own solution for infrastructure. In this case, it will be advantageous to define a reference infrastructure which contains all the hardware and software that make up the core environment. Specifications and diagrams should be created to outline what this reference infrastructure looks like, as well as it's baseline cost and the incremental cost to scale up with volume. Having some consistency in terms of infrastructure will save time and money as new countries / sites come online. Here are some properties of the reference infrastructure: 
+Standardized approach to setup of hardware 
+Type and number of servers 
+Defines application server, operating system, database, etc... - including vendor and specific versions
+Consistent naming conventions 
+Provides a consistent base of terminology and understanding across environments
+Defines which ATG services run on which servers 
+Production 
+Staging 
+BCC / Preview
+Each site can change as required to meet scale requirements
+Governance / organization 
+It should be no surprise that the complex application we're talking about is backed by an equally complex organization. One of the more challenging aspects of efficiently managing a series of complex applications is to ensure the proper level of governance and organization. Here are some ideas and goals to work towards: 
+Establish a committee to make enterprise-wide decisions that affect all sites 
+Representation should be evenly distributed 
+Should have a clear communication procedure 
+Focus on high level business goals 
+Evaluation of feature / function gaps and how that relates to ATG release schedule / roadmap 
+Determine when to upgrade & ensure value will be realized
+Determine how to manage various levels of modules 
+Who is responsible for maintaining corporate / country / site layers 
+Determine a procedure for controlling what goes in the corporate foundation module
+Standardize on source code control, database, hardware, OS versions, J2EE app servers, development procedures, etc 
+only use tested / proven versions - this is something that should be centralized so that every country / site does not have to worry about compatibility between versions
+Create a innovation team 
+Quickly develop new features, perform proof of concepts 
+All teams can benefit from their findings
+Summary 
+At this point, it should be clear why the topics above (design, governance, organization, etc) are critical to being able to efficiently manage a complex application. To summarize, it's all about competitive advantage... You will need to reduce costs and improve time to market with the goal of providing a better experience for your end customers. You can reduce cost by reducing development time, time allocated to testing (don't have to test the corporate foundation module over and over again - do it once), and optimizing operations. With an efficient design, you can improve your time to market and your business will be more flexible and agile. Over time, you'll find that you're becoming more focused on offering functionality that is new to the market (creativity) and this will be rewarded - you're now a leader. 
+In addition to the above, you'll realize soft benefits as well. Your staff will be operating in a culture based on sharing. You'll want to reward efforts to improve and enhance the foundation as this will benefit everyone. This culture will inspire innovation, which can only lend itself to your competitive advantage. 
